@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-kubernetes
+  labels:
+    func: "helloworld"
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        editor: vscode
+    spec:
+      containers:
+      - name: hello-kubernetes
+        image: "test:latest"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: my-service
+spec:
+  selector:
+    editor: vscode
+  ports:
+   - name: http
+     protocol: TCP
+     port: 80 
+  type: NodePort
